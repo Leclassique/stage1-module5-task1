@@ -7,26 +7,42 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class InterfaceCreator {
 
     public Predicate<List<String>> isValuesStartWithUpperCase() {
-        throw new UnsupportedOperationException("You should implement this method.");
+        return strings -> strings.stream()
+                .allMatch(x -> Character.isUpperCase(x.toCharArray()[0]));
     }
 
     public Consumer<List<Integer>> addEvenValuesAtTheEnd() {
-        throw new UnsupportedOperationException("You should implement this method.");
+        return integers -> {
+            int limit = integers.size() - 1;
+            for (int i = 0; i <= limit; i++){
+                if (integers.get(i) % 2 == 0){
+                    integers.add(integers.get(i));
+                }
+            }
+        };
     }
 
     public Supplier<List<String>> filterCollection(List<String> values) {
-        throw new UnsupportedOperationException("You should implement this method.");
+        return () -> values.stream()
+                .filter(s -> Character.isUpperCase(s.toCharArray()[0])
+                        && s.endsWith(".")
+                        && s.split(" ").length > 3)
+                .collect(Collectors.toList());
     }
 
     public Function<List<String>, Map<String, Integer>> stringSize() {
-        throw new UnsupportedOperationException("You should implement this method.");
+        return strings -> strings.stream()
+                .collect(Collectors.toMap(k -> k, String::length));
     }
 
     public BiFunction<List<Integer>, List<Integer>, List<Integer>> concatList() {
-        throw new UnsupportedOperationException("You should implement this method.");
+        return (integers, integers2) -> Stream.concat(integers.stream(), integers2.stream())
+                .collect(Collectors.toList());
     }
 }
